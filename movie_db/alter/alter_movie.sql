@@ -7,14 +7,14 @@ ALTER TABLE movie ADD CONSTRAINT fk_actor_id FOREIGN KEY(lead_actor_id) REFERENC
 
 ALTER TABLE movie ADD CONSTRAINT uq_movie UNIQUE (studio_id, lead_actor_id);
 
-COMMENT ON TABLE actor is 'Movies';
-COMMENT ON COLUMN actor.title is 'Movie title';
-COMMENT ON COLUMN actor.genre is 'Movie genre';
-COMMENT ON COLUMN actor.release_year is 'Date the movie premiered';
-COMMENT ON COLUMN actor.rating is 'IMDB movie rating';
-COMMENT ON COLUMN actor.studio_id is 'Studio id from studio table';
-COMMENT ON COLUMN actor.lead_actor_id is 'Lead actor id from actor table';
-COMMENT ON COLUMN actor.creation_time is 'New entry creation time';
-COMMENT ON COLUMN actor.creation_user is 'User that executed the creation';
-COMMENT ON COLUMN actor.last_mod_time is 'Lat time the entry was modified';
-COMMENT ON COLUMN actor.version is 'Version';
+COMMENT ON TABLE movie is 'Movies';
+COMMENT ON COLUMN movie.title is 'Movie title';
+COMMENT ON COLUMN movie.genre is 'Movie genre';
+COMMENT ON COLUMN movie.release_year is 'Date the movie premiered';
+COMMENT ON COLUMN movie.rating is 'IMDB movie rating';
+COMMENT ON COLUMN movie.studio_id is 'Studio id from studio table';
+COMMENT ON COLUMN movie.lead_actor_id is 'Lead actor id from actor table';
+COMMENT ON COLUMN movie.creation_time is 'New entry creation time';
+COMMENT ON COLUMN movie.creation_user is 'User that executed the creation';
+COMMENT ON COLUMN movie.last_mod_time is 'Lat time the entry was modified';
+COMMENT ON COLUMN movie.version is 'Version';
