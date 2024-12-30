@@ -1,11 +1,9 @@
 CREATE OR REPLACE PACKAGE movie_pkg AS
-    exc_movie_exists_code CONSTANT NUMBER := -60001;
     exc_movie_exists EXCEPTION;
-    PRAGMA EXCEPTION_INIT(exc_movie_exists, exc_movie_exists_code);
+    PRAGMA EXCEPTION_INIT(exc_movie_exists, -60001);
 
-    exc_movie_not_found_code CONSTANT NUMBER := -60002;
     exc_movie_not_found EXCEPTION;
-    PRAGMA EXCEPTION_INIT(exc_movie_not_found, exc_movie_not_found_code);
+    PRAGMA EXCEPTION_INIT(exc_movie_not_found, -60002);
 
     PROCEDURE add_movie(p_title VARCHAR2, p_genre VARCHAR2, p_release_year NUMBER, p_studio_id NUMBER, p_lead_actor_id NUMBER);
     PROCEDURE update_movie(p_movie_id NUMBER, p_title VARCHAR2, p_genre VARCHAR2, p_release_year NUMBER, p_studio_id NUMBER, p_lead_actor_id NUMBER);
@@ -16,23 +14,25 @@ END movie_pkg;
 CREATE OR REPLACE PACKAGE BODY movie_pkg AS
 
     PROCEDURE add_movie(p_title VARCHAR2, p_genre VARCHAR2, p_release_year NUMBER, p_studio_id NUMBER, p_lead_actor_id NUMBER) IS
+        dummy NUMBER;  
     BEGIN
         BEGIN
             SELECT 1
             INTO   dummy
             FROM   movie
             WHERE  title = p_title;
-            RAISE exc_movie_exists;
+
+            RAISE exc_movie_exists; 
         EXCEPTION
             WHEN NO_DATA_FOUND THEN
-                NULL;
+                NULL; 
         END;
 
         INSERT INTO movie (id, title, genre, release_year, studio_id, lead_actor_id, creation_time, creation_user, last_mod_time, dml_flag, version)
         VALUES (movie_seq.NEXTVAL, p_title, p_genre, p_release_year, p_studio_id, p_lead_actor_id, SYSDATE, 'SYSTEM', SYSDATE, 'A', 1);
     EXCEPTION
         WHEN exc_movie_exists THEN
-            DBMS_OUTPUT.PUT_LINE('Movie already exists.');
+            DBMS_OUTPUT.PUT_LINE('Movie already exists. Error Code: -60001');
         WHEN OTHERS THEN
             RAISE;
     END add_movie;
@@ -45,6 +45,7 @@ CREATE OR REPLACE PACKAGE BODY movie_pkg AS
             SELECT COUNT(*) INTO v_exists
             FROM movie
             WHERE id = p_movie_id;
+
             IF v_exists = 0 THEN
                 RAISE exc_movie_not_found;
             END IF;
@@ -60,9 +61,9 @@ CREATE OR REPLACE PACKAGE BODY movie_pkg AS
         WHERE id = p_movie_id;
     EXCEPTION
         WHEN exc_movie_not_found THEN
-            DBMS_OUTPUT.PUT_LINE('Movie not found for update.');
+            DBMS_OUTPUT.PUT_LINE('Movie not found for update. Error Code: -60002');
         WHEN OTHERS THEN
-            RAISE;
+            RAISE; 
     END update_movie;
 
     PROCEDURE delete_movie(p_movie_id NUMBER) IS
@@ -73,6 +74,7 @@ CREATE OR REPLACE PACKAGE BODY movie_pkg AS
             SELECT COUNT(*) INTO v_exists
             FROM movie
             WHERE id = p_movie_id;
+
             IF v_exists = 0 THEN
                 RAISE exc_movie_not_found;
             END IF;
@@ -82,7 +84,7 @@ CREATE OR REPLACE PACKAGE BODY movie_pkg AS
         WHERE id = p_movie_id;
     EXCEPTION
         WHEN exc_movie_not_found THEN
-            DBMS_OUTPUT.PUT_LINE('Movie not found for deletion.');
+            DBMS_OUTPUT.PUT_LINE('Movie not found for deletion. Error Code: -60002');
         WHEN OTHERS THEN
             RAISE;
     END delete_movie;
@@ -97,9 +99,9 @@ CREATE OR REPLACE PACKAGE BODY movie_pkg AS
         WHERE m.id = p_movie_id;
     EXCEPTION
         WHEN exc_movie_not_found THEN
-            DBMS_OUTPUT.PUT_LINE('Movie not found.');
+            DBMS_OUTPUT.PUT_LINE('Movie not found. Error Code: -60002');
         WHEN OTHERS THEN
-            RAISE;
+            RAISE; 
     END get_movie_details;
 
 END movie_pkg;

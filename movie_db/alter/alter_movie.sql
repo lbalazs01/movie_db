@@ -5,8 +5,6 @@ ALTER TABLE movie MODIFY(release_year NOT NULL);
 ALTER TABLE movie ADD CONSTRAINT fk_studio_id FOREIGN KEY(studio_id) REFERENCES studio(id);
 ALTER TABLE movie ADD CONSTRAINT fk_actor_id FOREIGN KEY(lead_actor_id) REFERENCES actor(id);
 
-ALTER TABLE movie ADD CONSTRAINT uq_movie UNIQUE (studio_id, lead_actor_id);
-
 COMMENT ON TABLE movie is 'Movies';
 COMMENT ON COLUMN movie.title is 'Movie title';
 COMMENT ON COLUMN movie.genre is 'Movie genre';

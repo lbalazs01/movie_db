@@ -1,29 +1,15 @@
 CREATE OR REPLACE PACKAGE actor_pkg AS
 
-    TYPE actor_stats_type IS OBJECT (
-        actor_id          NUMBER,
-        actor_name        VARCHAR2(100),
-        total_movies_starred NUMBER,
-        average_movie_rating NUMBER,
-        actor_age         NUMBER
-    );
-
-    TYPE actor_stats_list_type IS TABLE OF actor_stats_type;
-
-    -- Declare custom exceptions with custom error codes starting from 1
-    exc_actor_not_found_code CONSTANT NUMBER := -10001;
     exc_actor_not_found EXCEPTION;
     PRAGMA EXCEPTION_INIT(exc_actor_not_found, -10001);
 
-    exc_actor_duplicate_code CONSTANT NUMBER := -10002;
     exc_actor_duplicate EXCEPTION;
     PRAGMA EXCEPTION_INIT(exc_actor_duplicate, -10002);
 
-    exc_actor_data_error_code CONSTANT NUMBER := -10003;
     exc_actor_data_error EXCEPTION;
     PRAGMA EXCEPTION_INIT(exc_actor_data_error, -10003);
 
-    FUNCTION list_actor_stats RETURN actor_stats_list_type;
+    FUNCTION list_actor_stats RETURN ty_actor_stats_l;
 
     PROCEDURE add_actor(
         p_first_name      IN VARCHAR2,
@@ -31,6 +17,8 @@ CREATE OR REPLACE PACKAGE actor_pkg AS
         p_date_of_birth   IN DATE,
         p_nationality     IN VARCHAR2
     );
+
+END actor_pkg;
 /
 CREATE OR REPLACE PACKAGE BODY actor_pkg AS
 
@@ -46,7 +34,7 @@ CREATE OR REPLACE PACKAGE BODY actor_pkg AS
                )
         BULK COLLECT INTO v_actor_stats
         FROM actor a
-        JOIN movie m ON a.id = m.lead_actor_id
+        LEFT JOIN movie m ON a.id = m.lead_actor_id
         GROUP BY a.id, a.first_name, a.last_name, a.date_of_birth;
 
         RETURN v_actor_stats;

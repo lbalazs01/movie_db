@@ -1,4 +1,3 @@
-ALTER TABLE studio ADD CONSTRAINT uk_studio_name unique(studio_name);
 ALTER TABLE studio MODIFY(studio_name NOT NULL);
 ALTER TABLE studio MODIFY(lot_location NOT NULL);
 

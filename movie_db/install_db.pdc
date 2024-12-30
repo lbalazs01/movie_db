@@ -1,0 +1,350 @@
+PROMPT Installing DB...
+
+-- Install sequences
+@./sequence/seq_studio.sql
+@./sequence/seq_actor.sql
+@./sequence/seq_movie.sql
+
+-- Install tables
+@./tables/studio.sql
+@./tables/actor.sql
+@./tables/movie.sql
+
+@./audit/studio_h.sql
+@./audit/actor_h.sql
+@./audit/movie_h.sql
+
+-- Install types
+@./type/ty_actor_stats.tps
+@./type/ty_actor_stats_l.tps
+
+-- Packages
+@./packages/studio_pkg.pck
+@./packages/actor_pkg.pck
+@./packages/movie_pkg.pck
+
+-- Views
+@./view/vw_movie_details.sql
+@./view/vw_actor_statistics.sql
+@./view/vw_actor_filmography.sql
+@./view/vw_studio_performance.sql
+@./view/vw_studio_productions.sql
+
+-- Triggers
+@./trigger/trg_studio_h.trg
+@./trigger/trg_actor_h.trg
+@./trigger/trg_movie_h.trg
+
+-- Recompile schema
+BEGIN
+  dbms_utility.compile_schema(schema => 'movie_manager');
+END;
+/
+
+-- FK Constraints
+@./alter/alter_studio.sql
+@./alter/alter_actor.sql
+@./alter/alter_movie.sql
+
+-- Insert data into Studio table
+insert into studio (
+       id,
+       studio_name,
+       founded_year,
+       lot_location,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       studio_seq.nextval,
+       'Warner Bros.',
+       1923,
+       'Burbank, California',
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into studio (
+       id,
+       studio_name,
+       founded_year,
+       lot_location,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       studio_seq.nextval,
+       'Universal Pictures',
+       1912,
+       'Universal City, California',
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into studio (
+       id,
+       studio_name,
+       founded_year,
+       lot_location,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       studio_seq.nextval,
+       'Paramount Pictures',
+       1912,
+       'Hollywood, California',
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into studio (
+       id,
+       studio_name,
+       founded_year,
+       lot_location,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       studio_seq.nextval,
+       '20th Century Studios',
+       1935,
+       'Burbank, California',
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+-- Insert data into Actor table
+insert into actor (
+       id,
+       first_name,
+       last_name,
+       date_of_birth,
+       nationality,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       actor_seq.nextval,
+       'Leonardo',
+       'DiCaprio',
+       to_date('1974-11-11', 'yyyy-mm-dd'),
+       'American',
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into actor (
+       id,
+       first_name,
+       last_name,
+       date_of_birth,
+       nationality,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       actor_seq.nextval,
+       'Brad',
+       'Pitt',
+       to_date('1963-12-18', 'yyyy-mm-dd'),
+       'American',
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into actor (
+       id,
+       first_name,
+       last_name,
+       date_of_birth,
+       nationality,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       actor_seq.nextval,
+       'Meryl',
+       'Streep',
+       to_date('1949-06-22', 'yyyy-mm-dd'),
+       'American',
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into actor (
+       id,
+       first_name,
+       last_name,
+       date_of_birth,
+       nationality,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       actor_seq.nextval,
+       'Tom',
+       'Hanks',
+       to_date('1956-07-09', 'yyyy-mm-dd'),
+       'American',
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+-- Insert data into Movie table
+insert into movie (
+       id,
+       title,
+       genre,
+       release_year,
+       rating,
+       studio_id,
+       lead_actor_id,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       movie_seq.nextval,
+       'Inception',
+       'Sci-Fi',
+       2010,
+       8.8,
+       300001,  
+       200000,  
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into movie (
+       id,
+       title,
+       genre,
+       release_year,
+       rating,
+       studio_id,
+       lead_actor_id,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       movie_seq.nextval,
+       'Fight Club',
+       'Drama',
+       1999,
+       8.8,
+       300002,  
+       200001,  
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into movie (
+       id,
+       title,
+       genre,
+       release_year,
+       rating,
+       studio_id,
+       lead_actor_id,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       movie_seq.nextval,
+       'The Devil Wears Prada',
+       'Comedy',
+       2006,
+       6.9,
+       300000,  
+       200002,  
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+insert into movie (
+       id,
+       title,
+       genre,
+       release_year,
+       rating,
+       studio_id,
+       lead_actor_id,
+       creation_time,
+       creation_user,
+       last_mod_time,
+       dml_flag,
+       version
+) values (
+       movie_seq.nextval,
+       'Forrest Gump',
+       'Drama',
+       1994,
+       8.8,
+       300001,  
+       200003,  
+       sysdate,
+       'admin',
+       sysdate,
+       'A',
+       1
+);
+
+commit;
+
+PROMPT Done.
